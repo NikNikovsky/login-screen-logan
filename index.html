@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Screen</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23667eea'/%3E%3Ctext x='50' y='65' font-size='60' text-anchor='middle' fill='white' font-family='Arial'%3EL%3C/text%3E%3C/svg%3E">
     <style>
         * {
             margin: 0;
@@ -163,7 +164,7 @@
             
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" autocomplete="current-password" required>
+                <input type="text" id="password" name="password" placeholder="Enter your password" autocomplete="current-password" required>
             </div>
             
             <button type="submit" class="login-button">Login</button>
@@ -199,31 +200,58 @@
                     throw new Error('Invalid background configuration');
                 }
                 
-                // Apply background
+                // Apply background and set author credit. For images, preload to detect 404s and fall back gracefully.
                 if (selectedBg.type === 'gradient' && selectedBg.value) {
-                    // Basic validation for gradient - ensure it starts with expected CSS function
                     if (selectedBg.value.match(/^(linear-gradient|radial-gradient|conic-gradient)\(/)) {
                         document.body.style.background = selectedBg.value;
                     }
-                } else if (selectedBg.type === 'image' && selectedBg.url) {
-                    // Sanitize URL - only allow relative paths or https URLs
-                    const url = selectedBg.url;
-                    if (url.match(/^(backgrounds\/|https:\/\/)/)) {
-                        document.body.style.backgroundImage = `url('${url.replace(/'/g, "\\'")}')`;
+
+                    const creditElement = document.getElementById('authorCredit');
+                    creditElement.textContent = 'Background by ';
+                    const authorLink = document.createElement('a');
+                    authorLink.href = selectedBg.authorUrl;
+                    authorLink.textContent = selectedBg.author;
+                    authorLink.target = '_blank';
+                    authorLink.rel = 'noopener noreferrer';
+                    creditElement.appendChild(authorLink);
+
+                } else if (selectedBg.type === 'image' && selectedBg.value) {
+                    let url = selectedBg.value;
+                    if (!url.match(/^(https?:\/\/|\/|backgrounds\/)/)) {
+                        url = 'backgrounds/' + url;
                     }
+
+                    const img = new Image();
+                    img.onload = function() {
+                        document.body.style.backgroundImage = `url('${url.replace(/'/g, "\\'")}')`;
+                        document.body.style.backgroundSize = 'cover';
+                        document.body.style.backgroundRepeat = 'no-repeat';
+                        document.body.style.backgroundPosition = 'center';
+
+                        const creditElement = document.getElementById('authorCredit');
+                        creditElement.textContent = 'Background by ';
+                        const authorLink = document.createElement('a');
+                        authorLink.href = selectedBg.authorUrl;
+                        authorLink.textContent = selectedBg.author;
+                        authorLink.target = '_blank';
+                        authorLink.rel = 'noopener noreferrer';
+                        creditElement.appendChild(authorLink);
+                    };
+                    img.onerror = function() {
+                        // If image fails (404), fall back to default gradient and credit
+                        document.body.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                        const creditElement = document.getElementById('authorCredit');
+                        creditElement.textContent = 'Background inspired by ';
+                        const link = document.createElement('a');
+                        link.href = 'https://www.adobe.com/products/xd.html';
+                        link.textContent = 'Adobe XD';
+                        link.target = '_blank';
+                        link.rel = 'noopener noreferrer';
+                        creditElement.appendChild(link);
+                        creditElement.appendChild(document.createTextNode(' style'));
+                    };
+                    img.src = url;
                 }
-                
-                // Update author credit using safe DOM methods
-                const creditElement = document.getElementById('authorCredit');
-                creditElement.textContent = 'Background by ';
-                
-                const authorLink = document.createElement('a');
-                authorLink.href = selectedBg.authorUrl;
-                authorLink.textContent = selectedBg.author;
-                authorLink.target = '_blank';
-                authorLink.rel = 'noopener noreferrer';
-                
-                creditElement.appendChild(authorLink);
                 
             } catch (error) {
                 console.error('Error loading background:', error);
@@ -251,10 +279,13 @@
             e.preventDefault();
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            
+
             // Basic validation
             if (username && password) {
-                alert('Login functionality would be implemented here.\nUsername: ' + username);
+                // Log credentials in console (for dev) and redirect to congration page with username only
+                console.log('Login submitted', { username });
+                const qs = '?user=' + encodeURIComponent(username);
+                window.location.href = 'congration.html' + qs;
             }
         });
 

@@ -4,13 +4,12 @@ Just a login screen background mockup thingie for Logan's thing
 
 ## Live Demo
 
-This login screen is automatically deployed to GitHub Pages. Visit the live demo at:
+This login screen is automatically deployed to GitHub Pages, it might take a few minutes to show up after comitting, please be patient. Visit the live demo at:
 `https://niknikovsky.github.io/login-screen-logan/`
 
 ## Features
 
 - Clean, modern login interface
-- Adobe XD-inspired gradient background
 - Responsive design that works on all devices
 - Username and password input fields
 - "Forgot Password" link

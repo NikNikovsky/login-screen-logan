@@ -15,5 +15,21 @@
       "author": "Nik N",
       "authorUrl": "https://www.flickr.com/photos/niknikovsky/"
     }
+        ,
+    {
+      "id": "3",
+      "type": "image",
+      "value": "3.png",
+      "author": "Computer Clan",
+      "authorUrl": "https://www.flickr.com/photos/computerclan/"
+    }
+        ,
+    {
+      "id": "4",
+      "type": "image",
+      "value": "4.jpg",
+      "author": "Computer Clan",
+      "authorUrl": "https://www.flickr.com/photos/computerclan/"
+    }
   ]
 }
