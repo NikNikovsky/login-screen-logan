@@ -6,13 +6,39 @@
     <title>Congration</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23667eea'/%3E%3Ctext x='50' y='65' font-size='60' text-anchor='middle' fill='white' font-family='Comic Sans MS, Arial'%3EL%3C/text%3E%3C/svg%3E">
     <style>
+        /* Local bundled font: the site will prefer files placed in ./fonts/ as
+           ComicNeue-Regular.woff2 and ComicNeue-Bold.woff2. If those files
+           are missing the remote Google Fonts link (kept as fallback) will be used. */
+        @font-face {
+            font-family: 'ComicNeueLocal';
+            src: url('fonts/ComicNeue-Regular.woff2') format('woff2'),
+                 url('fonts/ComicNeue-Regular.woff') format('woff');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'ComicNeueLocal';
+            src: url('fonts/ComicNeue-Bold.woff2') format('woff2'),
+                 url('fonts/ComicNeue-Bold.woff') format('woff');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'ComicNeueLocal';
+            src: url('fonts/ComicNeue-BoldItalic.ttf') format('truetype');
+            font-weight: 700;
+            font-style: italic;
+            font-display: swap;
+        }
         html,body{height:100%;}
         body{
             margin:0;
             display:flex;
             align-items:center;
             justify-content:center;
-            font-family:'Comic Sans MS','Comic Sans',cursive;
+            font-family:'ComicNeueLocal','Comic Neue','Comic Sans MS','Comic Sans',cursive;
             background:#fff;
         }
         .message{
