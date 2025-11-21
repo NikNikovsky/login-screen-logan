@@ -1,12 +1,19 @@
 {
   "backgrounds": [
     {
-      "id": "adobe-gradient",
-      "type": "gradient",
-      "value": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-      "author": "Adobe XD",
-      "authorUrl": "https://www.adobe.com/products/xd.html",
-      "description": "Adobe XD inspired gradient"
+      "id": "1",
+      "type": "image",
+      "value": "54935824831_96f5bafc4d_b.jpg",
+      "author": "Nik N",
+      "authorUrl": "https://www.flickr.com/photos/niknikovsky/"
+    }
+    ,
+    {
+      "id": "2",
+      "type": "image",
+      "value": "54936072864_baa6f7803c_b.jpg",
+      "author": "Nik N",
+      "authorUrl": "https://www.flickr.com/photos/niknikovsky/"
     }
   ]
 }
