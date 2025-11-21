@@ -17,7 +17,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #667eea;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             position: relative;
         }
 
@@ -171,11 +174,43 @@
         </form>
     </div>
 
-    <div class="author-credit">
-        Background inspired by <a href="https://www.adobe.com/products/xd.html" target="_blank" rel="noopener noreferrer">Adobe XD</a> style
+    <div class="author-credit" id="authorCredit">
+        Loading...
     </div>
 
     <script>
+        // Load backgrounds configuration and set random background
+        async function loadBackground() {
+            try {
+                const response = await fetch('backgrounds.json');
+                const data = await response.json();
+                
+                // Select a random background (or first one for now)
+                const backgrounds = data.backgrounds;
+                const selectedBg = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+                
+                // Apply background
+                if (selectedBg.type === 'gradient') {
+                    document.body.style.background = selectedBg.value;
+                } else if (selectedBg.type === 'image') {
+                    document.body.style.backgroundImage = `url('${selectedBg.url}')`;
+                }
+                
+                // Update author credit
+                const creditElement = document.getElementById('authorCredit');
+                creditElement.innerHTML = `Background by <a href="${selectedBg.authorUrl}" target="_blank" rel="noopener noreferrer">${selectedBg.author}</a>`;
+                
+            } catch (error) {
+                console.error('Error loading background:', error);
+                // Fallback to default gradient
+                document.body.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+                document.getElementById('authorCredit').innerHTML = 'Background inspired by <a href="https://www.adobe.com/products/xd.html" target="_blank" rel="noopener noreferrer">Adobe XD</a> style';
+            }
+        }
+
+        // Load background on page load
+        loadBackground();
+
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const username = document.getElementById('username').value;

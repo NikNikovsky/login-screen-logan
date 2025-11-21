@@ -1,0 +1,12 @@
+{
+  "backgrounds": [
+    {
+      "id": "adobe-gradient",
+      "type": "gradient",
+      "value": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+      "author": "Adobe XD",
+      "authorUrl": "https://www.adobe.com/products/xd.html",
+      "description": "Adobe XD inspired gradient"
+    }
+  ]
+}
