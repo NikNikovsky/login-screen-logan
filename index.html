@@ -185,26 +185,62 @@
                 const response = await fetch('backgrounds.json');
                 const data = await response.json();
                 
+                // Validate backgrounds array
+                if (!data.backgrounds || !Array.isArray(data.backgrounds) || data.backgrounds.length === 0) {
+                    throw new Error('No backgrounds found in configuration');
+                }
+                
                 // Select a random background (or first one for now)
                 const backgrounds = data.backgrounds;
                 const selectedBg = backgrounds[Math.floor(Math.random() * backgrounds.length)];
                 
-                // Apply background
-                if (selectedBg.type === 'gradient') {
-                    document.body.style.background = selectedBg.value;
-                } else if (selectedBg.type === 'image') {
-                    document.body.style.backgroundImage = `url('${selectedBg.url}')`;
+                // Validate required fields
+                if (!selectedBg.type || !selectedBg.author || !selectedBg.authorUrl) {
+                    throw new Error('Invalid background configuration');
                 }
                 
-                // Update author credit
+                // Apply background
+                if (selectedBg.type === 'gradient' && selectedBg.value) {
+                    // Basic validation for gradient - ensure it starts with expected CSS function
+                    if (selectedBg.value.match(/^(linear-gradient|radial-gradient|conic-gradient)\(/)) {
+                        document.body.style.background = selectedBg.value;
+                    }
+                } else if (selectedBg.type === 'image' && selectedBg.url) {
+                    // Sanitize URL - only allow relative paths or https URLs
+                    const url = selectedBg.url;
+                    if (url.match(/^(backgrounds\/|https:\/\/)/)) {
+                        document.body.style.backgroundImage = `url('${url.replace(/'/g, "\\'")}')`;
+                    }
+                }
+                
+                // Update author credit using safe DOM methods
                 const creditElement = document.getElementById('authorCredit');
-                creditElement.innerHTML = `Background by <a href="${selectedBg.authorUrl}" target="_blank" rel="noopener noreferrer">${selectedBg.author}</a>`;
+                creditElement.textContent = 'Background by ';
+                
+                const authorLink = document.createElement('a');
+                authorLink.href = selectedBg.authorUrl;
+                authorLink.textContent = selectedBg.author;
+                authorLink.target = '_blank';
+                authorLink.rel = 'noopener noreferrer';
+                
+                creditElement.appendChild(authorLink);
                 
             } catch (error) {
                 console.error('Error loading background:', error);
                 // Fallback to default gradient
                 document.body.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-                document.getElementById('authorCredit').innerHTML = 'Background inspired by <a href="https://www.adobe.com/products/xd.html" target="_blank" rel="noopener noreferrer">Adobe XD</a> style';
+                
+                const creditElement = document.getElementById('authorCredit');
+                creditElement.textContent = 'Background inspired by ';
+                
+                const link = document.createElement('a');
+                link.href = 'https://www.adobe.com/products/xd.html';
+                link.textContent = 'Adobe XD';
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+                
+                creditElement.appendChild(link);
+                creditElement.appendChild(document.createTextNode(' style'));
             }
         }
 
