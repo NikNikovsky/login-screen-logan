@@ -18,6 +18,13 @@
             font-display: swap;
         }
         @font-face {
+            font-family: 'ComiciLocal';
+            src: url('fonts/comici.ttf') format('truetype');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
             font-family: 'ComicNeueLocal';
             src: url('fonts/ComicNeue-Bold.woff2') format('woff2'),
                  url('fonts/ComicNeue-Bold.woff') format('woff');
@@ -38,7 +45,7 @@
             display:flex;
             align-items:center;
             justify-content:center;
-            font-family:'ComicNeueLocal','Comic Neue','Comic Sans MS','Comic Sans',cursive;
+            font-family:'ComiciLocal','ComicNeueLocal','Comic Neue','Comic Sans MS','Comic Sans',cursive;
             background:#fff;
         }
         .message{
@@ -56,6 +63,7 @@
     <div style="text-align:center;">
         <div class="message">congration</div>
         <div class="subtitle" id="subtitle">you're logged in</div>
+        <div class="hash" id="repoHash" aria-live="polite"></div>
     </div>
     <script>
         // Read `user` from query string and display it safely
@@ -67,6 +75,35 @@
                 // show username in subtitle: "you're logged in, <user>"
                 subtitle.textContent = `you're logged in, ${user}`;
             }
+        })();
+        
+        // Try fetching a repo/packaged commit hash from common filenames and show it
+        (function(){
+            const candidates = ['COMMIT_HASH','commit.txt','version.txt','VERSION'];
+            const out = document.getElementById('repoHash');
+
+            function show(text){
+                out.textContent = text;
+            }
+
+            async function tryFiles() {
+                for (const name of candidates) {
+                    try {
+                        const res = await fetch(name, {cache: 'no-store'});
+                        if (!res.ok) continue;
+                        const txt = (await res.text()).trim();
+                        if (txt) {
+                            show('build: ' + txt);
+                            return;
+                        }
+                    } catch (_) {
+                        // ignore and try next
+                    }
+                }
+                show('build: (no commit file found)');
+            }
+
+            tryFiles();
         })();
     </script>
 </body>
