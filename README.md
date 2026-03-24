@@ -1,6 +1,7 @@
 # login-screen-logan
 
 Just a login screen background mockup thingie for Logan's thing
+[![AI Slop Inside](https://sladge.net/badge.svg)](https://sladge.net)
 
 ## Live Demo
 
